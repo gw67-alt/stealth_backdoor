@@ -2,19 +2,23 @@
 #include <thread>
 #include <chrono>
 #include <array>
-
-template<size_t N>
-void sleep_with_increment(const std::array<int, N>& arr, size_t& index) {
-    if (index < N) {
-        std::this_thread::sleep_for(std::chrono::seconds(arr[index]));
-        std::cout << "Slept for " << arr[index] << " seconds at index " << index << "\n";
-        sleep_with_increment(arr, ++index);  // Pre-increment index
+//add delay before packet emission
+void regular_function() {
+    int index = 0;
+    std::array<int, 4> hex_array = {0x1, 0x2, 0x3, 0x5};
+         
+    for (int i = 0; i < 100; i++) {
+        if (index < hex_array.size()) { 
+            std::this_thread::sleep_for(std::chrono::microseconds(hex_array[index]));  // Fixed variable name
+            std::cout << "Simulated signal sent at " << hex_array[index] << " microseconds for array index " << index << "\n";
+            index++;  // Added increment to progress through array
+        }
+        
+        std::cout << i << "\n";  // Added newline for better readability
     }
 }
 
 int main() {
-    std::array<int, 4> hex_array = {0x1, 0x2, 0x3, 0x5};
-    size_t i = 0;
-    sleep_with_increment(hex_array, i);
+    regular_function();
     return 0;
 }
